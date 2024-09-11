@@ -67,11 +67,96 @@ def succ_error_ring(N, eps, eta_init):
         log_lost = 1 - log_succ_this_layer - log_fail_x_this_layer - log_fail_y_this_layer - log_fail_z_this_layer
 
     log_lost = 1 - log_succ_this_layer
+    print("err, detect: ", log_succ_error, err_detect)
     for _ in range(N - 3):
         log_succ_error, err_detect, log_succ_this_layer, log_lost, epsilon_up, epsilon_f, sing_trans = fault_tolerant_fusion_layers_error(
             log_succ_this_layer, log_lost, sing_trans, log_succ_error, err_detect, epsilon_up, epsilon_f)
+    print("err, detect final: ", log_succ_error, err_detect)
     return log_succ_this_layer, err_detect, log_succ_error
 
+
+
+
+def succ_error_ring_updated(N, eps, eta_init):
+    log_succ_error_ZZ, log_succ_error_XX, log_succ_error_YY, error_detection_prob, log_p_fail_x_this_layer, log_p_fail_y_this_layer, log_p_fail_z_this_layer, log_succ_this_layer, \
+    log_fail_x_this_layer, log_fail_y_this_layer, log_fail_z_this_layer, epsilon_up, epsilon_f_up, eta_up = \
+        log_fusion_error_prob_individ_parities(eps, 0, failed_flip(eps), failed_flip(eps), failed_flip(eps),
+                              (1 / 2) * (eta_init ** 2), (1 / 2) * (eta_init ** 2), (1 / 2) * (eta_init ** 2),
+                              (1 / 2) * (eta_init ** 2), 1 - eta_init ** 2, eta_init, failed_flip(eps), failed_flip(eps), failed_flip(eps))
+    # eps, eps_f, eps_p_fail_x, eps_p_fail_y, eps_p_fail_z, log_succ, log_p_fail_x, log_p_fail_y, log_p_fail_z, log_lost, sing_trans, XX_par, ZZ_par, YY_par
+
+    init_eps_f = intial_eps_f_with_loss(eps, eta_init)
+    sing_trans = log_transmission(eta_init)
+    epsilon_up = epsilon_up
+    epsilon_f = init_eps_f
+    err_detect = 0
+    log_lost = 1 - log_succ_this_layer - log_fail_x_this_layer - log_fail_y_this_layer - log_fail_z_this_layer
+
+    print(log_succ_this_layer, log_fail_x_this_layer, log_fail_z_this_layer, eta_init)
+    for _ in range(2):
+        log_succ_error_ZZ, log_succ_error_XX, log_succ_error_YY, error_detection_prob, log_p_fail_x_this_layer, log_p_fail_y_this_layer, log_p_fail_z_this_layer, log_succ_this_layer, \
+        log_fail_x_this_layer, log_fail_y_this_layer, log_fail_z_this_layer, epsilon_up, epsilon_f, sing_trans = \
+            log_fusion_error_prob_individ_parities(epsilon_up, epsilon_f, log_p_fail_x_this_layer, log_p_fail_y_this_layer,
+                                  log_p_fail_z_this_layer, log_succ_this_layer, log_fail_x_this_layer,
+                                  log_fail_y_this_layer, log_fail_z_this_layer, log_lost, sing_trans, log_succ_error_ZZ, log_succ_error_XX, log_succ_error_YY)
+        print(log_succ_this_layer, log_fail_x_this_layer, log_fail_z_this_layer)
+        # err_detect += error_detection_prob * (1 - err_detect) + err_detect * (1 - error_detection_prob)
+        err_detect += error_detection_prob
+        log_lost = 1 - log_succ_this_layer - log_fail_x_this_layer - log_fail_y_this_layer - log_fail_z_this_layer
+    print("XX and ZZ,", log_succ_error_XX, log_succ_error_ZZ, log_succ_error_YY, err_detect)
+    log_lost = 1 - log_succ_this_layer
+    for _ in range(N - 3):
+        print("Logical succ: ", log_succ_this_layer)
+        log_succ_error_ZZ, log_succ_error_XX, log_succ_error_YY, err_detect, log_succ_this_layer, log_lost, epsilon_up, epsilon_f, sing_trans = \
+            fault_tolerant_fusion_layers_error_individ_paritites(log_succ_this_layer, log_lost, sing_trans, log_succ_error_XX, log_succ_error_ZZ, log_succ_error_YY, err_detect, epsilon_up, epsilon_f)
+
+    log_succ_error = 1 - (1 - log_succ_error_XX) * (1 - log_succ_error_ZZ)
+    print("final", log_succ_error, err_detect)
+    return log_succ_this_layer, err_detect, log_succ_error
+
+
+
+
+def succ_ring_with_individ_det(N, eps, eta_init):
+    log_succ_error_ZZ, log_succ_error_XX, log_succ_error_YY, log_p_fail_x_this_layer, log_p_fail_y_this_layer, log_p_fail_z_this_layer, log_succ_this_layer, \
+    log_fail_x_this_layer, log_fail_y_this_layer, log_fail_z_this_layer, epsilon_up, epsilon_f_up, eta_up, log_succ_det_ZZ, log_succ_det_XX, log_succ_det_YY = \
+        log_fusion_error_prob_individ_parities_with_detection(eps, 0, failed_flip(eps), failed_flip(eps), failed_flip(eps),
+                              (1 / 2) * (eta_init ** 2), (1 / 2) * (eta_init ** 2), (1 / 2) * (eta_init ** 2),
+                              (1 / 2) * (eta_init ** 2), 1 - eta_init ** 2, eta_init, failed_flip(eps), failed_flip(eps), failed_flip(eps), 0, 0, 0)
+
+    init_eps_f = intial_eps_f_with_loss(eps, eta_init)
+    sing_trans = log_transmission(eta_init)
+    epsilon_up = epsilon_up
+    epsilon_f = init_eps_f
+    err_detect = 0
+    log_lost = 1 - log_succ_this_layer - log_fail_x_this_layer - log_fail_y_this_layer - log_fail_z_this_layer
+    for _ in range(2):
+        log_succ_error_ZZ, log_succ_error_XX, log_succ_error_YY, log_p_fail_x_this_layer, log_p_fail_y_this_layer, log_p_fail_z_this_layer, log_succ_this_layer, \
+        log_fail_x_this_layer, log_fail_y_this_layer, log_fail_z_this_layer, epsilon_up, epsilon_f, sing_trans, log_succ_det_ZZ, log_succ_det_XX, log_succ_det_YY = \
+            log_fusion_error_prob_individ_parities_with_detection(epsilon_up, epsilon_f, log_p_fail_x_this_layer, log_p_fail_y_this_layer,
+                                  log_p_fail_z_this_layer, log_succ_this_layer, log_fail_x_this_layer,
+                                  log_fail_y_this_layer, log_fail_z_this_layer, log_lost, sing_trans, log_succ_error_ZZ, log_succ_error_XX, log_succ_error_YY, log_succ_det_ZZ, log_succ_det_XX, log_succ_det_YY )
+        log_lost = 1 - log_succ_this_layer - log_fail_x_this_layer - log_fail_y_this_layer - log_fail_z_this_layer
+        print("detections:", log_succ_det_ZZ, log_succ_det_XX, log_succ_det_YY, _)
+        print("errors: ", log_succ_error_ZZ, log_succ_error_XX, log_succ_error_YY, _)
+    log_lost = 1 - log_succ_this_layer
+    print("detections:", log_succ_det_ZZ, log_succ_det_XX, log_succ_det_YY)
+    print("errors: ", log_succ_error_ZZ, log_succ_error_XX, log_succ_error_YY)
+    for _ in range(N - 3):
+        log_succ_error_ZZ, log_succ_error_XX, log_succ_error_YY, log_succ_this_layer, log_lost, epsilon_up, epsilon_f, sing_trans,log_succ_det_ZZ, log_succ_det_XX, log_succ_det_YY = \
+        fault_tolerant_fusion_layers_error_individ_det(log_succ_this_layer, log_lost, sing_trans, log_succ_error_XX, log_succ_error_ZZ,
+                                                                 log_succ_error_YY, epsilon_up,
+                                                       epsilon_f, log_succ_det_XX, log_succ_det_ZZ, log_succ_det_YY)
+            # fault_tolerant_fusion_layers_error_individ_paritites(log_succ_this_layer, log_lost, sing_trans,
+            #                                                      log_succ_error_ZZ, log_succ_error_XX,
+            #                                                      log_succ_error_YY, err_detect, epsilon_up, epsilon_f)
+    print("LOG SUCC: ", log_succ_this_layer)
+    err_detect = log_succ_det_ZZ * (1 - log_succ_det_XX) + log_succ_det_XX * (1 - log_succ_det_ZZ) + log_succ_det_XX * log_succ_det_ZZ# 1 - (1 - log_succ_det_XX) * (1 - log_succ_det_ZZ)
+    log_succ_error = log_succ_error_ZZ * (1 - log_succ_error_XX - log_succ_det_XX) + log_succ_error_XX * (1 - log_succ_error_ZZ-log_succ_det_ZZ) + log_succ_error_XX * log_succ_error_ZZ# 1 - (1 - log_succ_error_XX) * (1 - log_succ_error_ZZ)
+    print("detections final:", log_succ_det_ZZ, log_succ_det_XX, log_succ_det_YY)
+    print("errors final: ", log_succ_error_ZZ, log_succ_error_XX, log_succ_error_YY)
+    print("final", log_succ_error, err_detect)
+    return log_succ_this_layer, err_detect, log_succ_error
 
 def gen_time_tree(b0, b1, b2, t_gen, t_CZ):
     generation_time = b0 * (100 + b1 * (1 + b2)) * t_gen
@@ -374,8 +459,5 @@ def compare_tree_error(eta, t_CZ, t_gen_times, N=3, n=4):
 
 if __name__ == '__main__':
     # gen_time_tree(4, 14, 4, 1, 1)
-    t_CZ = 10 / (10 ** 9)
-    # t_CZ = 1 / (10**12)
-    # compare_tree_spin_gates(1, t_CZ, [10 / (10 ** 9)], N=3)
-    compare_tree(1, t_CZ, [1000 / (10 ** 9)], N=3)
-    compare_tree_error(1, t_CZ, [1/ (10 ** 9)], N=5)
+    for N in range(4, 8):
+        print(succ_error_ring(N, 2 * 0.0005 / 3, 0.756868))
