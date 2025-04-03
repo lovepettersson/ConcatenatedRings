@@ -228,6 +228,9 @@ def log_fusion_error_prob_individ_parities_with_detection_with_fail(eps, eps_f, 
     traj_six_detect_XX = (1 - (1 - ZZ_par_det) * (1 - log_p_fail_x_detect) * (1 - log_p_fail_z_detect)) * log_p_fail_x * log_p_fail_x * log_p_fail_z * log_succ
     traj_six_detect_YY = (1 - (1 - YY_par_detect) * (1 - log_p_fail_z_detect)) * log_p_fail_x * log_p_fail_x * log_p_fail_z * log_succ
 
+
+    ## p_f_x * p_l * p_s * eta**2
+
     log_succ_this_layer = log_fusion_prob(log_succ, log_p_fail_x, log_p_fail_y, log_p_fail_z, log_lost, sing_trans)
     epsilon_up, epsilon_f_up, eta_up = error_prop_layer_with_loss(eps, eps_f, sing_trans) # log_transmission(sing_trans)
     log_fail_x_this_layer, log_fail_z_this_layer = log_failure(log_succ, log_p_fail_x, log_p_fail_y, log_p_fail_z, log_lost, sing_trans)
@@ -347,7 +350,8 @@ def final_correction_layer_with_fail(p_s, p_l, sing_trans, p_x, p_z):
     term_one = p_s ** 4  ##  All succed
     term_two = p_s * p_l * (sing_trans ** 4)  ## first succeed and second is lost
     term_three = p_s * p_s * p_l * (sing_trans ** 2)  ## two first succed and third is lost
-    term_four = (p_s ** 3) * p_l  ## first three succed and last is lost
+    # term_four = (p_s ** 3) * p_l  ## first three succed and last is lost
+    term_four = (p_s ** 3) * (1 - p_s)  ## first three succed and last is lost
     term_five = p_l * p_s * (sing_trans ** 4)  ## first is lost
     term_six = p_s * p_z * (
                 (sing_trans ** 2 + 2 * sing_trans * (1 - sing_trans)) ** 2)  ## first succeed and second fails in Z
@@ -590,13 +594,21 @@ def fault_tolerant_fusion_layers_error_individ_det_with_fail(p_s, p_l, sing_tran
 
     ## p_s ** 3 * p_l
 
-    term_four_error_ZZ = (XX_par * no_error_or_detect_Z + ZZ_par * no_error_or_detect_X) * p_l * (p_s ** 3)
-    term_four_error_YY = (YY_par * no_error_or_detect_X + XX_par * no_error_or_detect_Y) * p_l * (p_s ** 3)
-    term_four_error_XX = (2 * YY_par * no_error_or_detect_Y) * p_l * (p_s ** 3)
+    # term_four_error_ZZ = (XX_par * no_error_or_detect_Z + ZZ_par * no_error_or_detect_X) * p_l * (p_s ** 3)
+    # term_four_error_YY = (YY_par * no_error_or_detect_X + XX_par * no_error_or_detect_Y) * p_l * (p_s ** 3)
+    # term_four_error_XX = (2 * YY_par * no_error_or_detect_Y) * p_l * (p_s ** 3)
 
-    term_four_detect_ZZ = (1 - (1 - XX_par_det) * (1 - ZZ_par_detect)) * p_l * (p_s ** 3)
-    term_four_detect_YY = (1 - (1 - XX_par_det) * (1 - YY_par_det)) * p_l * (p_s ** 3)
-    term_four_detect_XX = (1 - ((1 - YY_par_det) ** 2)) * p_l * (p_s ** 3)
+    # term_four_detect_ZZ = (1 - (1 - XX_par_det) * (1 - ZZ_par_detect)) * p_l * (p_s ** 3)
+    # term_four_detect_YY = (1 - (1 - XX_par_det) * (1 - YY_par_det)) * p_l * (p_s ** 3)
+    # term_four_detect_XX = (1 - ((1 - YY_par_det) ** 2)) * p_l * (p_s ** 3)
+
+    term_four_error_ZZ = (XX_par * no_error_or_detect_Z + ZZ_par * no_error_or_detect_X) * (1 - p_s) * (p_s ** 3)
+    term_four_error_YY = (YY_par * no_error_or_detect_X + XX_par * no_error_or_detect_Y) * (1 - p_s) * (p_s ** 3)
+    term_four_error_XX = (2 * YY_par * no_error_or_detect_Y) * (1 - p_s) * (p_s ** 3)
+
+    term_four_detect_ZZ = (1 - (1 - XX_par_det) * (1 - ZZ_par_detect)) * (1 - p_s) * (p_s ** 3)
+    term_four_detect_YY = (1 - (1 - XX_par_det) * (1 - YY_par_det)) * (1 - p_s) * (p_s ** 3)
+    term_four_detect_XX = (1 - ((1 - YY_par_det) ** 2)) * (1 - p_s) * (p_s ** 3)
 
     # p_s_1 * p_l_2 * eta ** 4
 
