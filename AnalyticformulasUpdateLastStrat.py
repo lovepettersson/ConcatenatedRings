@@ -275,29 +275,29 @@ def log_failure_errors_with_fail(eps, eps_f, eps_p_fail_x, eps_p_fail_y, eps_p_f
     no_error_or_detect_p_x = 1 - eps_p_fail_x - log_p_fail_x_detect
     no_error_or_detect_p_y = 1 - eps_p_fail_y - log_p_fail_y_detect
 
-    term_one = (YY_par * (p_s ** 2) + YY_par * eps * eps + 2 * eps * p_s * no_err_detect_YY) * (log_lost * log_succ * sing_trans * sing_trans) * ((1 - sing_trans ** 2))
-    term_one_detect = (1 - (1 - YY_par_detect) * ((1 - eps_f) ** 2)) * (log_lost * log_succ * sing_trans * sing_trans) * ((1 - sing_trans ** 2))
+    # term_one = (YY_par * (p_s ** 2) + YY_par * eps * eps + 2 * eps * p_s * no_err_detect_YY) * (log_lost * log_succ * sing_trans * sing_trans) * ((1 - sing_trans ** 2))
+    # term_one_detect = (1 - (1 - YY_par_detect) * ((1 - eps_f) ** 2)) * (log_lost * log_succ * sing_trans * sing_trans) * ((1 - sing_trans ** 2))
 
-    term_two = (YY_par * no_error_or_detect_p_y + eps_p_fail_y * no_err_detect_YY) * (log_lost * log_succ * log_p_fail_y) * ((1 - sing_trans ** 2))
-    term_two_detect = (1 - (1 - YY_par_detect) * (1 - log_p_fail_y_detect)) * (log_lost * log_succ * log_p_fail_y) * ((1 - sing_trans ** 2))
+    # term_two = (YY_par * no_error_or_detect_p_y + eps_p_fail_y * no_err_detect_YY) * (log_lost * log_succ * log_p_fail_y) * ((1 - sing_trans ** 2))
+    # term_two_detect = (1 - (1 - YY_par_detect) * (1 - log_p_fail_y_detect)) * (log_lost * log_succ * log_p_fail_y) * ((1 - sing_trans ** 2))
 
-    # term_one = (YY_par * (p_s ** 2) + YY_par * eps * eps + 2 * eps * p_s * no_err_detect_YY) * (log_lost * log_succ * sing_trans * sing_trans) * ((1 - sing_trans) ** 2)
-    # term_one_detect = (1 - (1 - YY_par_detect) * ((1 - eps_f) ** 2)) * (log_lost * log_succ * sing_trans * sing_trans) * ((1 - sing_trans) ** 2)
+    term_one = (YY_par * (p_s ** 2) + YY_par * eps * eps + 2 * eps * p_s * no_err_detect_YY) * (log_lost * log_succ * sing_trans * sing_trans) * ((1 - sing_trans) ** 2)
+    term_one_detect = (1 - (1 - YY_par_detect) * ((1 - eps_f) ** 2)) * (log_lost * log_succ * sing_trans * sing_trans) * ((1 - sing_trans) ** 2)
 
-    # term_two = (YY_par * no_error_or_detect_p_y + eps_p_fail_y * no_err_detect_YY) * (log_lost * log_succ * log_p_fail_y) * ((1 - sing_trans) ** 2)
-    # term_two_detect = (1 - (1 - YY_par_detect) * (1 - log_p_fail_y_detect)) * (log_lost * log_succ * log_p_fail_y) * ((1 - sing_trans) ** 2)
+    term_two = (YY_par * no_error_or_detect_p_y + eps_p_fail_y * no_err_detect_YY) * (log_lost * log_succ * log_p_fail_y) * ((1 - sing_trans) ** 2)
+    term_two_detect = (1 - (1 - YY_par_detect) * (1 - log_p_fail_y_detect)) * (log_lost * log_succ * log_p_fail_y) * ((1 - sing_trans) ** 2)
 
 
     term_three = (binom_coeff(2, 1) * eps_p_fail_x * no_error_or_detect_p_x * (no_error_or_detect_p_z ** 2) + binom_coeff(2, 1) * eps_p_fail_z * no_error_or_detect_p_z * (no_error_or_detect_p_x ** 2) \
                   + binom_coeff(2, 1) * eps_p_fail_z * no_error_or_detect_p_z * (eps_p_fail_x ** 2) + binom_coeff(2, 1) * (eps_p_fail_z ** 2) * no_error_or_detect_p_x * eps_p_fail_x) * ((log_p_fail_x ** 2) * (log_p_fail_z ** 2))
     term_three_detect = (1 - ((1 - log_p_fail_x_detect) ** 2) * ((1 - log_p_fail_z_detect) ** 2)) * ((log_p_fail_x ** 2) * (log_p_fail_z ** 2))
 
-    # tot_fail_prob = (((log_p_fail_x ** 2) * (log_p_fail_z ** 2)) + (log_lost * log_succ * log_p_fail_y) * ((1 - sing_trans) ** 2) + (
-    #                 log_lost * log_succ * sing_trans * sing_trans) * ((1 - sing_trans) ** 2))
+    tot_fail_prob = (((log_p_fail_x ** 2) * (log_p_fail_z ** 2)) + (log_lost * log_succ * log_p_fail_y) * ((1 - sing_trans) ** 2) + (
+                    log_lost * log_succ * sing_trans * sing_trans) * ((1 - sing_trans) ** 2))
 
-    tot_fail_prob = (((log_p_fail_x ** 2) * (log_p_fail_z ** 2)) + (log_lost * log_succ * log_p_fail_y) * (
-                (1 - sing_trans ** 2)) + (
-                             log_lost * log_succ * sing_trans * sing_trans) * ((1 - sing_trans ** 2)))
+    # tot_fail_prob = (((log_p_fail_x ** 2) * (log_p_fail_z ** 2)) + (log_lost * log_succ * log_p_fail_y) * (
+    #             (1 - sing_trans ** 2)) + (
+    #                         log_lost * log_succ * sing_trans * sing_trans) * ((1 - sing_trans ** 2)))
 
     log_p_fail_x_this_layer = (term_one + term_two + term_three) / tot_fail_prob
 
@@ -306,30 +306,34 @@ def log_failure_errors_with_fail(eps, eps_f, eps_p_fail_x, eps_p_fail_y, eps_p_f
     log_p_fail_y_this_layer = 0
     log_p_fail_y_detect_this_layer = 0
 
-    # term_one = (XX_par * (p_s ** 2) + no_err_detect_XX * binom_coeff(2, 1) * eps * p_s + XX_par * (eps ** 2)) * (log_succ * sing_trans * sing_trans) * ((1 - sing_trans) ** 4)
-    # term_one_detect = (1 - (1 - XX_par_detect) * ((1 - eps_f) ** 2)) * (log_succ * sing_trans * sing_trans) * ((1 - sing_trans) ** 4)
+    term_one = (XX_par * (p_s ** 2) + no_err_detect_XX * binom_coeff(2, 1) * eps * p_s + XX_par * (eps ** 2)) * (log_succ * sing_trans * sing_trans) * ((1 - sing_trans) ** 4)
+    term_one_detect = (1 - (1 - XX_par_detect) * ((1 - eps_f) ** 2)) * (log_succ * sing_trans * sing_trans) * ((1 - sing_trans) ** 4)
 
-    # term_two = (ZZ_par * no_error_or_detect_p_x + eps_p_fail_x * no_err_detect_ZZ) * (log_p_fail_x * log_succ) * ((1 - sing_trans) ** 4)
-    # term_two_detect = (1 - (1 - ZZ_par_det) * (1 - log_p_fail_x_detect)) * (log_p_fail_x * log_succ) * ((1 - sing_trans) ** 4)
+    term_two = (ZZ_par * no_error_or_detect_p_x + eps_p_fail_x * no_err_detect_ZZ) * (log_p_fail_x * log_succ) * ((1 - sing_trans) ** 4)
+    term_two_detect = (1 - (1 - ZZ_par_det) * (1 - log_p_fail_x_detect)) * (log_p_fail_x * log_succ) * ((1 - sing_trans) ** 4)
 
-    term_one = (XX_par * (p_s ** 2) + no_err_detect_XX * binom_coeff(2, 1) * eps * p_s + XX_par * (eps ** 2)) * (log_succ * sing_trans * sing_trans) * (4 * sing_trans * ((1 - sing_trans) ** 3) + ((1 - sing_trans) ** 4) + 2 * (sing_trans ** 2) * ((1 - sing_trans) ** 2))
-    term_one_detect = (1 - (1 - XX_par_detect) * ((1 - eps_f) ** 2)) * (log_succ * sing_trans * sing_trans) * (4 * sing_trans * ((1 - sing_trans) ** 3) + ((1 - sing_trans) ** 4) + 2 * (sing_trans ** 2) * ((1 - sing_trans) ** 2))
+    # term_one = (XX_par * (p_s ** 2) + no_err_detect_XX * binom_coeff(2, 1) * eps * p_s + XX_par * (eps ** 2)) * (log_succ * sing_trans * sing_trans) * (4 * sing_trans * ((1 - sing_trans) ** 3) + ((1 - sing_trans) ** 4) + 2 * (sing_trans ** 2) * ((1 - sing_trans) ** 2))
+    # term_one_detect = (1 - (1 - XX_par_detect) * ((1 - eps_f) ** 2)) * (log_succ * sing_trans * sing_trans) * (4 * sing_trans * ((1 - sing_trans) ** 3) + ((1 - sing_trans) ** 4) + 2 * (sing_trans ** 2) * ((1 - sing_trans) ** 2))
 
-    term_two = (ZZ_par * no_error_or_detect_p_x + eps_p_fail_x * no_err_detect_ZZ) * (log_p_fail_x * log_succ) * (1 - ((sing_trans ** 2 + 2 * sing_trans * (1- sing_trans)) ** 2))
-    term_two_detect = (1 - (1 - ZZ_par_det) * (1 - log_p_fail_x_detect)) * (log_p_fail_x * log_succ) * (1 - ((sing_trans ** 2 + 2 * sing_trans * (1- sing_trans)) ** 2))
+    # term_two = (ZZ_par * no_error_or_detect_p_x + eps_p_fail_x * no_err_detect_ZZ) * (log_p_fail_x * log_succ) * (1 - ((sing_trans ** 2 + 2 * sing_trans * (1- sing_trans)) ** 2))
+    # term_two_detect = (1 - (1 - ZZ_par_det) * (1 - log_p_fail_x_detect)) * (log_p_fail_x * log_succ) * (1 - ((sing_trans ** 2 + 2 * sing_trans * (1- sing_trans)) ** 2))
 
     term_three = (eps_p_fail_x * (p_s ** 4) + eps_p_fail_x * binom_coeff(4, 2) * eps * eps * p_s * p_s + \
                   no_error_or_detect_p_x * binom_coeff(4, 1) * eps * (p_s ** 3) + no_error_or_detect_p_x * binom_coeff(4, 3) * (eps ** 3) * p_s) * log_p_fail_x * log_lost * (sing_trans ** 4)
     term_three_detect = (1 - (1 - log_p_fail_x_detect) * ((1 - eps_f) ** 4)) * log_p_fail_x * log_lost * (sing_trans ** 4)
 
-    term_four = ((binom_coeff(4, 1) * eps * (p_s ** 3) + binom_coeff(4, 3) * (eps ** 3) * p_s) * (log_lost ** 2) * (sing_trans ** 4))
-    term_four_detect = (1 - (1 - eps_f) ** 4) * (log_lost ** 2) * (sing_trans ** 4)
+    # term_four = ((binom_coeff(4, 1) * eps * (p_s ** 3) + binom_coeff(4, 3) * (eps ** 3) * p_s) * (log_lost ** 2) * (sing_trans ** 4))
+    # term_four_detect = (1 - (1 - eps_f) ** 4) * (log_lost ** 2) * (sing_trans ** 4)
 
-    tot_fail_prob = log_p_fail_x * log_lost * (sing_trans ** 4) + (log_p_fail_x * log_succ) * (1 - ((sing_trans ** 2 + 2 * sing_trans * (1- sing_trans)) ** 2)) \
-                    + log_succ * (4 * sing_trans * ((1 - sing_trans) ** 3) + ((1 - sing_trans) ** 4) + 2 * (sing_trans ** 2) * ((1 - sing_trans) ** 2)) +  (log_lost ** 2) * (sing_trans ** 4)
+    # tot_fail_prob = log_p_fail_x * log_lost * (sing_trans ** 4) + (log_p_fail_x * log_succ) * (1 - ((sing_trans ** 2 + 2 * sing_trans * (1- sing_trans)) ** 2)) \
+    #                + log_succ * (4 * sing_trans * ((1 - sing_trans) ** 3) + ((1 - sing_trans) ** 4) + 2 * (sing_trans ** 2) * ((1 - sing_trans) ** 2)) +  (log_lost ** 2) * (sing_trans ** 4)
 
-    log_p_fail_z_this_layer = (term_one + term_two + term_three + term_four) / tot_fail_prob
-    log_p_fail_z_detect_this_layer = (term_one_detect + term_two_detect + term_three_detect + term_four_detect) / tot_fail_prob
+    tot_fail_prob = log_p_fail_x * log_lost * (sing_trans ** 4) + (log_p_fail_x * log_succ) * (
+                ((1 - sing_trans) ** 4)) \
+                    + log_succ * log_p_fail_x * ((1 - sing_trans) ** 4)
+
+    log_p_fail_z_this_layer = (term_one + term_two + term_three) / tot_fail_prob
+    log_p_fail_z_detect_this_layer = (term_one_detect + term_two_detect + term_three_detect) / tot_fail_prob
 
     return log_p_fail_x_this_layer, log_p_fail_y_this_layer, log_p_fail_z_this_layer, log_p_fail_x_detect_this_layer, log_p_fail_y_detect_this_layer, log_p_fail_z_detect_this_layer
 
@@ -380,6 +384,7 @@ def final_correction_layer_failure_probs(p_s, p_l, sing_trans, p_x, p_z):
 def final_correction_layer_failure_errors(p_s, p_l, sing_trans, p_x, p_z, XX_par, ZZ_par, YY_par, eps_sing,
                                                              eps_f_sing, XX_par_det, ZZ_par_detect, YY_par_det,
                                                              p_z_fail_error, p_z_detect, p_x_fail_error, p_x_detect):
+
     # p_s = fusion succees, p_l = fusion lost, sing_trans = photon transmission, p_i = failure prob rate in basis "i", XX/ZZ/YY_par = error prob in parities,
     # eps_sing = pauli meas error prob, eps_f_sing = pauli meas detect prob, XX/ZZ/YY_det = detection prob in parities,
     # p_i_fail_error = error rate in fusion failure in basis "i", p_i_detect = detectoin rate in failure basis "i"
