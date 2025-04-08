@@ -34,9 +34,7 @@ def log_fusion_prob_above_layers(p_s, p_f_x, p_f_y, p_f_z, p_l, sing_trans):
 
 
 def log_failure(p_s, p_f_x, p_f_y, p_f_z, p_l, sing_trans):
-    # p_failure_x = ((1 - sing_trans) ** 2) * p_l * p_s * (sing_trans ** 2 + p_f_y) + (p_f_x ** 2) * (p_f_z ** 2)
     p_failure_x = ((1 - sing_trans ** 2)) * p_l * p_s * (sing_trans ** 2 + p_f_y) + (p_f_x ** 2) * (p_f_z ** 2)
-    # p_failure_z = p_s * (sing_trans ** 2) * ((1 - sing_trans) ** 4) + p_f_x * p_s * ((1 - sing_trans) ** 4) + p_f_x * p_l * (sing_trans ** 4)
     p_failure_z = p_s * (sing_trans ** 2) * (4 * sing_trans * ((1 - sing_trans) ** 3) + ((1 - sing_trans) ** 4) + 2 * (sing_trans ** 2) * ((1 - sing_trans) ** 2)) + p_f_x * p_s * (1 - ((sing_trans ** 2 + 2 * sing_trans * (1- sing_trans)) ** 2)) + p_f_x * p_l * (sing_trans ** 4) \
      + (p_l ** 2) * (sing_trans ** 4)
     return p_failure_x, p_failure_z
