@@ -59,7 +59,8 @@ def error_prop_layer_fusion(epsilon_x, epsilon_f_x, epsilon_z, epsilon_f_z):
     # Use this for propagating fusion errors fault tolerantly, for logical X.
     p_s_x = 1 - epsilon_x - epsilon_f_x
     p_s_z = 1 - epsilon_z - epsilon_f_z
-    eps_up = 4 * epsilon_x * epsilon_z * p_s_x * p_s_z + (1 - (1 - epsilon_f_x) ** 2) * 2 * epsilon_z * p_s_z + (1 - (1 - epsilon_f_z) ** 2) * 2 * epsilon_x * p_s_x
+    # eps_up = 4 * epsilon_x * epsilon_z * p_s_x * p_s_z + (1 - (1 - epsilon_f_x) ** 2) * 2 * epsilon_z * p_s_z + (1 - (1 - epsilon_f_z) ** 2) * 2 * epsilon_x * p_s_x
+    eps_up = 4 * epsilon_x * epsilon_z * p_s_x * p_s_z + (2 * epsilon_f_x * (1 - epsilon_f_x) + epsilon_f_x ** 2) * 2 * epsilon_z * p_s_z + (2 * epsilon_f_z * (1 - epsilon_f_z) + epsilon_f_z ** 2) * 2 * epsilon_x * p_s_x
     eps_f_up = 2 * epsilon_x * p_s_x * p_s_z * p_s_z + 2 * epsilon_z * p_s_x * p_s_x * p_s_z + 2 * (epsilon_x ** 2) * epsilon_z * p_s_z + 2 * (epsilon_z ** 2) * epsilon_x * p_s_x + \
         4 * epsilon_f_x * epsilon_f_z * (1 - epsilon_f_x) * (1 - epsilon_f_z) + 2 * epsilon_f_x * epsilon_f_x * epsilon_f_z * (1 - epsilon_f_z) + 2 * epsilon_f_z * epsilon_f_z * epsilon_f_x * (1 - epsilon_f_x) + \
         epsilon_f_x * epsilon_f_x * epsilon_f_z * epsilon_f_z
@@ -70,9 +71,12 @@ def error_prop_layer_fusion_ZY(epsilon_x, epsilon_f_x, epsilon_z, epsilon_f_z):
     # For logical Z and Y we are matching different paritites, i.e., for logical Z it is X_1 x Z_2 or Z_3 x X_4
     p_s_x = 1 - epsilon_x - epsilon_f_x
     p_s_z = 1 - epsilon_z - epsilon_f_z
-    eps_up = 2 * epsilon_x * epsilon_x * p_s_z * p_s_z + 2 * epsilon_z * epsilon_z * p_s_x * p_s_x + 2 * (1 - (1 - epsilon_f_x) * (1 - epsilon_f_z)) * (epsilon_z * p_s_x + epsilon_x * p_s_z)
+    # eps_up = 2 * epsilon_x * epsilon_x * p_s_z * p_s_z + 2 * epsilon_z * epsilon_z * p_s_x * p_s_x + 2 * (1 - (1 - epsilon_f_x) * (1 - epsilon_f_z)) * (epsilon_z * p_s_x + epsilon_x * p_s_z)
+    eps_up = epsilon_x * epsilon_x * p_s_z * p_s_z + epsilon_z * epsilon_z * p_s_x * p_s_x + 2 * epsilon_z * epsilon_x * p_s_x * p_s_z + \
+             2 * (epsilon_f_x * (1 - epsilon_f_z) + (1 - epsilon_f_x) * epsilon_f_z + epsilon_f_x * epsilon_f_z) * (epsilon_z * p_s_x + epsilon_x * p_s_z)
     eps_f_up = 2 * epsilon_x * p_s_x * p_s_z * p_s_z + 2 * epsilon_z * p_s_x * p_s_x * p_s_z + 2 * (epsilon_x * epsilon_z) * epsilon_x * p_s_z + 2 * (epsilon_z * epsilon_x) * epsilon_z * p_s_x + \
-        2 * epsilon_f_x * epsilon_f_x * (1 - epsilon_f_z) * (1 - epsilon_f_z) + 2 * epsilon_f_z * epsilon_f_z * (1 - epsilon_f_x) * (1 - epsilon_f_x) + 2 * epsilon_f_x * epsilon_f_x * epsilon_f_z * (1 - epsilon_f_z) + 2 * epsilon_f_z * epsilon_f_z * epsilon_f_x * (1 - epsilon_f_x) + \
+        epsilon_f_x * epsilon_f_x * (1 - epsilon_f_z) * (1 - epsilon_f_z) + epsilon_f_z * epsilon_f_z * (1 - epsilon_f_x) * (1 - epsilon_f_x) + 2 * epsilon_f_z * epsilon_f_x * (1 - epsilon_f_z) * (1 - epsilon_f_x) \
+               + 2 * epsilon_f_x * epsilon_f_x * epsilon_f_z * (1 - epsilon_f_z) + 2 * epsilon_f_z * epsilon_f_z * epsilon_f_x * (1 - epsilon_f_x) + \
         epsilon_f_x * epsilon_f_x * epsilon_f_z * epsilon_f_z
     return eps_up, eps_f_up
 
@@ -86,14 +90,14 @@ def error_prop_layer_with_loss(epsilon, epsilon_f, eta):
     eta_four = eta ** 4
     p_s = 1 - epsilon - epsilon_f
     eta_up = log_transmission(eta)
-    epsilon_up = (eta_four * (4 * epsilon * epsilon * (p_s ** 2) + (2 * (2 * (p_s+epsilon) * epsilon_f + epsilon_f * epsilon_f)) * 2 * epsilon * p_s) + (eta_up - eta_four) * (2 * epsilon * (p_s))) / eta_up
+
+    epsilon_up = (eta_four * (4 * epsilon * epsilon * (p_s ** 2) + ((4 * (1 - epsilon_f) * epsilon_f + 2 * epsilon_f * epsilon_f)) * 2 * epsilon * p_s) + (
+                              eta_up - eta_four) * (2 * epsilon * (p_s))) / eta_up
     epsilon_f_up = (eta_four * (4 * epsilon * (p_s ** 3) + 4 * (epsilon ** 3) * p_s + 4 * epsilon_f * epsilon_f * ((1 - epsilon_f)**2) + 4 * epsilon_f * epsilon_f * epsilon_f * (1- epsilon_f) + epsilon_f ** 4) + (
                 eta_up - eta_four) * (2 * epsilon_f * (1 - epsilon_f) + epsilon_f ** 2)) / eta_up
     return epsilon_up, epsilon_f_up, eta_up
 
 
-def intial_eps_f_with_loss(epsilon, eta):
-    return (eta ** 4) * (4 * epsilon * ((1-epsilon) ** 3) + 4 * (epsilon ** 3) * (1 - epsilon))
 
 
 
