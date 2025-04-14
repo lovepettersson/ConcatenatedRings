@@ -273,11 +273,22 @@ def log_fusion_error_prob_individ_parities_with_detection_with_fail(eps, eps_f, 
     traj_nine_detect_XX = (1 - (1 - YY_par_detect) * (1 - log_p_fail_y_detect)) * log_p_fail_z * log_p_fail_y * log_succ * (sing_trans ** 2)
     traj_nine_detect_YY = (1 - (1 - XX_par_detect) * ((1 - eps_f) ** 2) * (1 - log_p_fail_y_detect)) * log_p_fail_z * log_p_fail_y * log_succ * (sing_trans ** 2)
 
+    # log_succ_this_layer = log_fusion_prob(log_succ, log_p_fail_x, log_p_fail_y, log_p_fail_z, log_lost, sing_trans)
+
     log_succ_this_layer = log_fusion_prob_above_layers(log_succ, log_p_fail_x, log_p_fail_y, log_p_fail_z, log_lost, sing_trans)
     epsilon_up, epsilon_f_up, eta_up = error_prop_layer_with_loss(eps, eps_f, sing_trans)
     log_fail_x_this_layer, log_fail_z_this_layer = log_failure(log_succ, log_p_fail_x, log_p_fail_y, log_p_fail_z, log_lost, sing_trans)
 
     log_fail_y_this_layer = 0
+
+
+    # log_succ_error_ZZ = (traj_one_error_ZZ + traj_two_error_ZZ + traj_three_error_ZZ + traj_four_error_ZZ + traj_five_error_ZZ + traj_six_error_ZZ) / log_succ_this_layer
+    # log_succ_error_XX = (traj_one_error_XX + traj_two_error_XX + traj_three_error_XX + traj_four_error_XX + traj_five_error_XX + traj_six_error_XX) / log_succ_this_layer
+    # log_succ_error_YY = (traj_one_error_YY + traj_two_error_YY + traj_three_error_YY + traj_four_error_YY + traj_five_error_YY + traj_six_error_YY) / log_succ_this_layer
+
+    # error_detection_prob_ZZ = (traj_one_detect_ZZ + traj_two_detect_ZZ + traj_three_detect_ZZ +traj_four_detect_ZZ + traj_five_detect_ZZ + traj_six_detect_ZZ) / log_succ_this_layer
+    # error_detection_prob_XX = (traj_one_detect_XX + traj_two_detect_XX + traj_three_detect_XX + traj_four_detect_XX + traj_five_detect_XX + traj_six_detect_XX) / log_succ_this_layer
+    # error_detection_prob_YY = (traj_one_detect_YY + traj_two_detect_YY + traj_three_detect_YY + traj_four_detect_YY + traj_five_detect_YY + traj_six_detect_YY) / log_succ_this_layer
 
     log_succ_error_ZZ = (traj_one_error_ZZ + traj_two_error_ZZ + traj_three_error_ZZ + traj_four_error_ZZ + traj_five_error_ZZ + traj_six_error_ZZ + traj_seven_error_ZZ + traj_eigth_error_ZZ + traj_nine_error_ZZ) / log_succ_this_layer
     log_succ_error_XX = (traj_one_error_XX + traj_two_error_XX + traj_three_error_XX + traj_four_error_XX + traj_five_error_XX + traj_six_error_XX + traj_seven_error_XX + traj_eigth_error_XX + traj_nine_error_XX) / log_succ_this_layer
@@ -318,12 +329,10 @@ def log_failure_errors_with_fail(eps, eps_f, eps_p_fail_x, eps_p_fail_y, eps_p_f
 
 
     # (1 - eta ** 2) * p_l * p_s * eta ** 2
-
     term_one = (YY_par * (p_s ** 2) + YY_par * eps * eps + 2 * eps * p_s * no_err_detect_YY) * (log_lost * log_succ * sing_trans * sing_trans) * ((1 - sing_trans ** 2))
     term_one_detect = (1 - (1 - YY_par_detect) * ((1 - eps_f) ** 2)) * (log_lost * log_succ * sing_trans * sing_trans) * ((1 - sing_trans ** 2))
 
     # (1 - eta ** 2) * p_l * p_s * p_y
-
     term_two = (YY_par * no_error_or_detect_p_y + eps_p_fail_y * no_err_detect_YY) * (log_lost * log_succ * log_p_fail_y) * ((1 - sing_trans ** 2))
     term_two_detect = (1 - (1 - YY_par_detect) * (1 - log_p_fail_y_detect)) * (log_lost * log_succ * log_p_fail_y) * ((1 - sing_trans ** 2))
 
@@ -334,7 +343,6 @@ def log_failure_errors_with_fail(eps, eps_f, eps_p_fail_x, eps_p_fail_y, eps_p_f
     term_three_detect = (1 - ((1 - log_p_fail_x_detect) ** 2) * (1 - log_p_fail_z_detect)) * ((log_p_fail_x ** 2) * (log_p_fail_z ** 2))
 
 
-
     tot_fail_prob = (((log_p_fail_x ** 2) * (log_p_fail_z ** 2)) + (log_lost * log_succ * log_p_fail_y) * ((1 - sing_trans ** 2)) + (log_lost * log_succ * sing_trans * sing_trans) * ((1 - sing_trans ** 2)))
 
     log_p_fail_x_this_layer = (term_one + term_two + term_three) / tot_fail_prob
@@ -342,6 +350,8 @@ def log_failure_errors_with_fail(eps, eps_f, eps_p_fail_x, eps_p_fail_y, eps_p_f
 
     log_p_fail_y_this_layer = 0
     log_p_fail_y_detect_this_layer = 0
+
+
 
     # p_s eta ** 2 * (4 * eta * (1 - eta) ** 3 + 2 * eta ** 2 * (1 - eta) ** 2)
 
@@ -368,6 +378,7 @@ def log_failure_errors_with_fail(eps, eps_f, eps_p_fail_x, eps_p_fail_y, eps_p_f
 
     tot_fail_prob = log_p_fail_x * log_lost * (sing_trans ** 4) + (log_p_fail_x * log_succ) * (1 - ((sing_trans ** 2 + 2 * sing_trans * (1- sing_trans)) ** 2)) \
                    + log_succ * (4 * sing_trans * ((1 - sing_trans) ** 3) + ((1 - sing_trans) ** 4) + 2 * (sing_trans ** 2) * ((1 - sing_trans) ** 2)) +  (log_lost ** 2) * (sing_trans ** 4)
+
 
     log_p_fail_z_this_layer = (term_one + term_two + term_three + term_four) / tot_fail_prob
     log_p_fail_z_detect_this_layer = (term_one_detect + term_two_detect + term_three_detect + term_four_detect) / tot_fail_prob
@@ -509,8 +520,8 @@ def fault_tolerant_fusion_layers_error_individ_det_with_fail(p_s, p_l, sing_tran
     no_error_or_detect_p_x = 1 - p_x_fail_error - p_x_detect
 
     term_one_error_XX_1, term_one_detect_XX = error_prop_layer_fusion(ZZ_par, ZZ_par_detect, YY_par, YY_par_det)
-    term_one_error_ZZ_1, term_one_detect_ZZ = error_prop_layer_fusion_ZY(ZZ_par, ZZ_par_detect, XX_par, XX_par_det)  # error_prop_layer_fusion(ZZ_par, ZZ_par_detect, XX_par, XX_par_det)
-    term_one_error_YY_1, term_one_detect_YY = error_prop_layer_fusion_ZY(XX_par, XX_par_det, YY_par, YY_par_det)  # error_prop_layer_fusion(XX_par, XX_par_det, YY_par, YY_par_det)
+    term_one_error_ZZ_1, term_one_detect_ZZ = error_prop_layer_fusion_ZY(ZZ_par, ZZ_par_detect, XX_par, XX_par_det)
+    term_one_error_YY_1, term_one_detect_YY = error_prop_layer_fusion_ZY(XX_par, XX_par_det, YY_par, YY_par_det)
     term_one_error_XX = term_one_error_XX_1 * (p_s ** 4)
     term_one_error_ZZ = term_one_error_ZZ_1 * (p_s ** 4)
     term_one_error_YY = term_one_error_YY_1 * (p_s ** 4)
@@ -679,10 +690,11 @@ def succ_ring_with_individ_det_with_fail_traj(N, eps, eta_init, N_first_layers=3
                               (1 / 2) * (eta_init ** 2), (1 / 2) * (eta_init ** 2), (1 / 2) * (eta_init ** 2),
                               (1 / 2) * (eta_init ** 2), 1 - eta_init ** 2, eta_init, failed_flip(eps), failed_flip(eps), failed_flip(eps), 0, 0, 0)
 
-    init_eps_f = intial_eps_f_with_loss(eps, eta_init)
+    # init_eps_f = intial_eps_f_with_loss(eps, eta_init)
     sing_trans = log_transmission(eta_init)
     epsilon_up = epsilon_up
-    epsilon_f = init_eps_f
+    # epsilon_f = init_eps_f
+    epsilon_f = epsilon_f_up
     log_lost = 1 - log_succ_this_layer - log_fail_x_this_layer - log_fail_y_this_layer - log_fail_z_this_layer
     # To be done
     for _ in range(N_first_layers-1):
