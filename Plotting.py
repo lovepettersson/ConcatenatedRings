@@ -22,7 +22,7 @@ def logical_fusion_plot():
             sing_trans = log_transmission(sing_trans)
             log_lost = 1 - log_succ - log_p_fail_z - log_p_fail_x
             log_succ_copy = copy.deepcopy(log_succ)
-            log_succ = log_fusion_prob(log_succ, log_p_fail_x,
+            log_succ = log_fusion_prob_above_layers(log_succ, log_p_fail_x,
                                        log_p_fail_y, log_p_fail_z, log_lost, sing_trans)
             log_p_fail_x, log_p_fail_z = log_failure(log_succ_copy, log_p_fail_x,
                                        log_p_fail_y, log_p_fail_z, log_lost, sing_trans)
@@ -37,14 +37,6 @@ def logical_fusion_plot():
         ax.plot(photon_loss, log_succ_plot[key], color=colors[cnt], linewidth=3.5, label="N = " + key)
         cnt += 1
     ax.plot(photon_loss, standard_fusion, "--", color="black", linewidth=3.5, label="Standard fusion")
-    # line1, = ax.plot(photon_loss[0], standard_fusion[0], "--", color="black", linewidth=2.5, label="standard fusion")
-
-    # first_legend = ax.legend(handles=[line1], title="Standard fusion", bbox_to_anchor=(0.6, 0.67),
-    #                                      loc="lower left",
-    #                                      fontsize=12, title_fontsize=12)  # 0.6, 0.25, 0.57, 0.2, slow:0.57, 0.09
-    # ax.add_artist(first_legend)
-    # ax.set_xlabel("Photon loss ($1-\eta$)", fontsize=14)
-    # ax.set_ylabel("Fusion success probability", fontsize=14)
     plt.tick_params(axis='both', which='major', labelsize=20)
     ax.legend(title="Layers", fontsize=18, title_fontsize=20)
     fig.savefig('FusionSuccProbLayers.pdf', dpi=600)
