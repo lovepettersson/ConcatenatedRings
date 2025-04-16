@@ -690,10 +690,8 @@ def succ_ring_with_individ_det_with_fail_traj(N, eps, eta_init, N_first_layers=3
                               (1 / 2) * (eta_init ** 2), (1 / 2) * (eta_init ** 2), (1 / 2) * (eta_init ** 2),
                               (1 / 2) * (eta_init ** 2), 1 - eta_init ** 2, eta_init, failed_flip(eps), failed_flip(eps), failed_flip(eps), 0, 0, 0)
 
-    # init_eps_f = intial_eps_f_with_loss(eps, eta_init)
     sing_trans = log_transmission(eta_init)
     epsilon_up = epsilon_up
-    # epsilon_f = init_eps_f
     epsilon_f = epsilon_f_up
     log_lost = 1 - log_succ_this_layer - log_fail_x_this_layer - log_fail_y_this_layer - log_fail_z_this_layer
     # To be done
