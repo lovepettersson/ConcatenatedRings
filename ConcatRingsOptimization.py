@@ -188,7 +188,6 @@ def optimize_cost_function(eps):
                 rates.append(r)
                 C = cost_func_rate(r, m, L, t_gen, N)
 
-                # if C < best_C and r >= r_ring:
                 if C < best_C:
                     best_C = C
                     best_rate = r
@@ -291,7 +290,6 @@ def optimize_cost_function_ring(eps):
                 fid_ring = (1 - log_error) ** (m + 1)
                 detect_abort = (1 - err_detect) ** (m + 1)
                 p_trans = p_succ ** (m + 1)
-                # print("fidelity: ", fid_ring, m, log_error, 2 * eps / 3, eta, N)
                 r = key_siphing(fid_ring) * rate(t_0, p_trans) * detect_abort
                 rates.append(r)
                 C = cost_func_rate(r, m, L, t_gen, N)
@@ -330,6 +328,4 @@ if __name__ == '__main__':
     epsilons = [0.003, 0.0001, 0.0005, 0.001]
     for eps in epsilons:
         # optimize_cost_function(eps)
-        # for N in range(4, 8):
-        #     print(succ_error_ring(N, 2 * eps / 3,0.756868), N)
         optimize_cost_function_ring(eps)
