@@ -59,7 +59,6 @@ def error_prop_layer_fusion(epsilon_x, epsilon_f_x, epsilon_z, epsilon_f_z):
     # Use this for propagating fusion errors fault tolerantly, for logical X.
     p_s_x = 1 - epsilon_x - epsilon_f_x
     p_s_z = 1 - epsilon_z - epsilon_f_z
-    # eps_up = 4 * epsilon_x * epsilon_z * p_s_x * p_s_z + (1 - (1 - epsilon_f_x) ** 2) * 2 * epsilon_z * p_s_z + (1 - (1 - epsilon_f_z) ** 2) * 2 * epsilon_x * p_s_x
     eps_up = 4 * epsilon_x * epsilon_z * p_s_x * p_s_z + (2 * epsilon_f_x * (1 - epsilon_f_x) + epsilon_f_x ** 2) * 2 * epsilon_z * p_s_z + (2 * epsilon_f_z * (1 - epsilon_f_z) + epsilon_f_z ** 2) * 2 * epsilon_x * p_s_x
     eps_f_up = 2 * epsilon_x * p_s_x * p_s_z * p_s_z + 2 * epsilon_z * p_s_x * p_s_x * p_s_z + 2 * (epsilon_x ** 2) * epsilon_z * p_s_z + 2 * (epsilon_z ** 2) * epsilon_x * p_s_x + \
         4 * epsilon_f_x * epsilon_f_z * (1 - epsilon_f_x) * (1 - epsilon_f_z) + 2 * epsilon_f_x * epsilon_f_x * epsilon_f_z * (1 - epsilon_f_z) + 2 * epsilon_f_z * epsilon_f_z * epsilon_f_x * (1 - epsilon_f_x) + \
@@ -71,7 +70,6 @@ def error_prop_layer_fusion_ZY(epsilon_x, epsilon_f_x, epsilon_z, epsilon_f_z):
     # For logical Z and Y we are matching different paritites, i.e., for logical Z it is X_1 x Z_2 or Z_3 x X_4
     p_s_x = 1 - epsilon_x - epsilon_f_x
     p_s_z = 1 - epsilon_z - epsilon_f_z
-    # eps_up = 2 * epsilon_x * epsilon_x * p_s_z * p_s_z + 2 * epsilon_z * epsilon_z * p_s_x * p_s_x + 2 * (1 - (1 - epsilon_f_x) * (1 - epsilon_f_z)) * (epsilon_z * p_s_x + epsilon_x * p_s_z)
     eps_up = epsilon_x * epsilon_x * p_s_z * p_s_z + epsilon_z * epsilon_z * p_s_x * p_s_x + 2 * epsilon_z * epsilon_x * p_s_x * p_s_z + \
              2 * (epsilon_f_x * (1 - epsilon_f_z) + (1 - epsilon_f_x) * epsilon_f_z + epsilon_f_x * epsilon_f_z) * (epsilon_z * p_s_x + epsilon_x * p_s_z)
     eps_f_up = 2 * epsilon_x * p_s_x * p_s_z * p_s_z + 2 * epsilon_z * p_s_x * p_s_x * p_s_z + 2 * (epsilon_x * epsilon_z) * epsilon_x * p_s_z + 2 * (epsilon_z * epsilon_x) * epsilon_z * p_s_x + \
