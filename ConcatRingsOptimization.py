@@ -180,7 +180,7 @@ def optimize_cost_function(eps):
             r_ring = 0
             for N in Ns:
                 t_0 = generation_time(N, n, t_CZ, t_meas, t_gen)
-                p_succ, err_detect, log_error = succ_ring_with_individ_det_with_fail_traj(N, 2 * eps / 3, eta)  # succ_error_ring(N, 2 * eps / 3, eta)
+                p_succ, err_detect, log_error = succ_ring_with_individ_det_with_fail_traj(N, 2 * eps / 3, eta) 
                 fid_ring = (1 - log_error) ** (m + 1)
                 detect_abort = (1 - err_detect) ** (m + 1)
                 p_trans = p_succ ** (m + 1)
@@ -286,7 +286,7 @@ def optimize_cost_function_ring(eps):
             r_ring = 0
             for N in Ns:
                 t_0 = generation_time(N, n, t_CZ, t_meas, t_gen)
-                p_succ, err_detect, log_error = succ_ring_with_individ_det_with_fail_traj(N, 2 * eps / 3, eta) # succ_ring_with_individ_det(N, 2 * eps / 3, eta)
+                p_succ, err_detect, log_error = succ_ring_with_individ_det_with_fail_traj(N, 2 * eps / 3, eta) 
                 fid_ring = (1 - log_error) ** (m + 1)
                 detect_abort = (1 - err_detect) ** (m + 1)
                 p_trans = p_succ ** (m + 1)
