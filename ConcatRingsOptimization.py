@@ -294,7 +294,6 @@ def optimize_cost_function_ring(eps):
                 rates.append(r)
                 C = cost_func_rate(r, m, L, t_gen, N)
 
-                # if C < best_C and r >= r_ring:
                 if C < best_C:
                     best_C = C
                     best_rate = r
