@@ -24,7 +24,7 @@ def number_of_meas(N, n, M_flag=False):
 
 
 def number_of_CZ(N, n):
-    numb_CZ = 2 * n + n + 1
+    numb_CZ = 2 * n + 2
     for _ in range(N - 2):
         numb_CZ *= n
         numb_CZ += n + 1
