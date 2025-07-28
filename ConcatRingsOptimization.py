@@ -320,7 +320,88 @@ def optimize_cost_function_ring(eps):
     ring_rates = np.array(parameters_ring_r)
     np.savetxt('ring_rate_rate_' + str(eps) + '_' + '.txt', ring_rates)
 
+def optimize_cost_function_ring_opt_error_lay(eps):
+    print("Eps: ", eps)
+    # Parameters
+    eta_d = 0.95
+    t_CZ = 1 / (10 ** 8)
+    t_gen = 1 / (10 ** 9)
+    t_meas = 10 * t_gen
+    Ls = [x for x in range(100, 1000, 20)]
+    # Ls = np.linspace(1000, 10000, 20)
+    # Ring parameters
+    n = 4
+    Ns = [4, 5, 6, 7]
 
+
+
+
+    # best parameters according to cost function
+    parameters_ring = []
+
+    parameters_ring_r = []
+    for L in Ls:
+        print("L = ", L)
+        ms = [n for n in range(int((L / 10)), int(L / 2))]
+        rates = []
+        rates_RGS = []
+        rates_tree = []
+
+
+        max_rate = 0
+        best_C = 10 ** 10
+        best_m_C = 0
+        best_N_C = 0
+
+        best_r = 0
+        best_r_m = 0
+        best_r_N = 0
+        best_rate = 0
+        best_N_E = 0
+
+
+        for m in ms:
+            fiber_trans = fiber_transmission(m, L)
+            eta = photon_transmission(eta_d, fiber_trans)
+
+
+
+            r_ring = 0
+            for N in Ns:
+                for N_E in range(1, N):
+                    t_0 = generation_time(N, n, t_CZ, t_meas, t_gen)
+                    p_succ, err_detect, log_error = succ_ring_with_individ_det_with_fail_traj(N, 2 * eps / 3, eta, N_first_layers=N_E) # succ_ring_with_individ_det(N, 2 * eps / 3, eta)
+                    fid_ring = (1 - log_error) ** (m + 1)
+                    detect_abort = (1 - err_detect) ** (m + 1)
+                    p_trans = p_succ ** (m + 1)
+                    # print("fidelity: ", fid_ring, m, log_error, 2 * eps / 3, eta, N)
+                    r = key_siphing(fid_ring) * rate(t_0, p_trans) * detect_abort
+                    rates.append(r)
+                    C = cost_func_rate(r, m, L, t_gen, N)
+
+                    # if C < best_C and r >= r_ring:
+                    if C < best_C:
+                        best_C = C
+                        best_rate = r
+                        best_m_C = m
+                        best_N_C = N
+                        best_N_E = N_E
+                    if r > best_r:
+                        best_r = r
+                        best_r_m = m
+                        best_r_N = N
+        print("Best parameters ring: ", best_rate, best_m_C, best_N_C, best_C, best_N_E)
+        print()
+        # print("Best rate ring: ", best_r, best_r_m, best_r_N)
+        parameters_ring.append([best_rate, best_m_C, best_N_C, best_C, best_N_E])
+        # parameters_ring_r.append([best_r, best_r_m, best_r_N])
+
+
+
+
+
+    ring_rates = np.array(parameters_ring)  # Saving best cost func
+    np.savetxt('ring_rate_' + str(eps) + '_' + '.txt', ring_rates)
 
 if __name__ == '__main__':
     import matplotlib.pyplot as plt
